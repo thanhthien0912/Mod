@@ -137,6 +137,11 @@ public sealed class ModInstallService
                 log(ex.Message);
                 log($"Please remove this line manually in OpenIV: {mod.DlclistEntry}");
             }
+            catch (Exception ex)
+            {
+                log($"Auto cleanup dlclist failed: {ex.Message}");
+                log($"Please remove this line manually in OpenIV: {mod.DlclistEntry}");
+            }
         }
         else
         {

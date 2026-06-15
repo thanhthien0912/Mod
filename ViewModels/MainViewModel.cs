@@ -9,6 +9,7 @@ using MessageBoxButton = System.Windows.MessageBoxButton;
 using MessageBoxImage = System.Windows.MessageBoxImage;
 using MessageBoxResult = System.Windows.MessageBoxResult;
 using WpfApplication = System.Windows.Application;
+using WpfClipboard = System.Windows.Clipboard;
 using Win32OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace GtavOfflineModLauncher.ViewModels;
@@ -41,9 +42,11 @@ public sealed class MainViewModel : ViewModelBase
         UninstallSelectedModCommand = new RelayCommand(async _ => await UninstallSelectedModAsync(), _ => !IsBusy);
         LaunchGtaOfflineCommand = new RelayCommand(_ => LaunchGtaOffline(), _ => !IsBusy);
         RefreshInstalledModsCommand = new RelayCommand(async _ => await LoadInstalledModsAsync(), _ => !IsBusy);
-
         InstalledMods = new ObservableCollection<InstalledMod>();
         LogEntries = new ObservableCollection<string>();
+        CopyLogEntriesCommand = new RelayCommand(_ => CopyLogEntries(), _ => LogEntries.Count > 0);
+
+        LogEntries.CollectionChanged += (_, _) => RaiseCommandStates();
 
         _ = InitializeAsync();
     }
@@ -145,6 +148,7 @@ public sealed class MainViewModel : ViewModelBase
     public ICommand UninstallSelectedModCommand { get; }
     public ICommand LaunchGtaOfflineCommand { get; }
     public ICommand RefreshInstalledModsCommand { get; }
+    public ICommand CopyLogEntriesCommand { get; }
 
     private async Task InitializeAsync()
     {
@@ -371,6 +375,26 @@ public sealed class MainViewModel : ViewModelBase
         }
     }
 
+    private void CopyLogEntries()
+    {
+        if (LogEntries.Count == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            var fullLog = string.Join(Environment.NewLine, LogEntries);
+            WpfClipboard.SetText(fullLog);
+            AddLog($"Copied {LogEntries.Count} log entr{(LogEntries.Count == 1 ? "y" : "ies")} to clipboard.");
+        }
+        catch (Exception ex)
+        {
+            AddLog($"Copy log failed: {ex.Message}");
+            MessageBox.Show(ex.Message, "Copy Log Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
     private void AddLog(string message)
     {
         var line = $"[{DateTime.Now:HH:mm:ss}] {message}";
@@ -391,5 +415,6 @@ public sealed class MainViewModel : ViewModelBase
         (UninstallSelectedModCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (LaunchGtaOfflineCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (RefreshInstalledModsCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        (CopyLogEntriesCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 }

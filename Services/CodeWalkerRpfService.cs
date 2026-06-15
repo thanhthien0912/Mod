@@ -59,7 +59,7 @@ public sealed class CodeWalkerRpfService : IRpfService
         {
             if (File.Exists(Path.Combine(dir, "GTA5.exe")))
             {
-                GTA5Keys.LoadFromPath(dir, "GTA5.exe");
+                GTA5Keys.LoadFromPath(dir);
                 return;
             }
             dir = Path.GetDirectoryName(dir);

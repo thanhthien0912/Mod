@@ -669,7 +669,26 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Activity Log" />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource TitleBrush}"
+                               Text="Activity Log"
+                               VerticalAlignment="Center" />
+
+                    <Button Grid.Column="1"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Content="Copy Full Log"
+                            Command="{Binding CopyLogEntriesCommand}"
+                            Height="30"
+                            Padding="12,0"
+                            FontSize="11.5" />
+                </Grid>
 
                 <ListBox x:Name="LogListBox"
                          Grid.Row="1"
