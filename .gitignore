@@ -1,0 +1,43 @@
+# Build output
+bin/
+obj/
+release/win-x64/
+publish/
+artifacts/
+
+# Visual Studio / Rider
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+_ReSharper*/
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Test / coverage
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local tooling state
+.bg-shell/
+.gsd/
+
+# Local environment
+.env
+.env.*
