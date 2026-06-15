@@ -22,7 +22,7 @@ public sealed class MainViewModel : ViewModelBase
     private string _selectedDlcRpfPath = string.Empty;
     private string _modName = string.Empty;
     private string _spawnName = string.Empty;
-    private bool _autoEditDlclist;
+    private bool _autoEditDlclist = true;
     private bool _isBusy;
     private InstalledMod? _selectedInstalledMod;
 
@@ -99,7 +99,7 @@ public sealed class MainViewModel : ViewModelBase
         get => _autoEditDlclist;
         set
         {
-            if (SetProperty(ref _autoEditDlclist, value))
+            if (SetProperty(ref _autoEditDlclist, true))
             {
                 _ = SaveAppSettingsAsync();
             }
@@ -152,7 +152,8 @@ public sealed class MainViewModel : ViewModelBase
         {
             var settings = await _jsonStorageService.LoadAppSettingsAsync();
             GtaPath = settings.GtaPath;
-            AutoEditDlclist = settings.AutoEditDlclist;
+            AutoEditDlclist = true;
+            await SaveAppSettingsAsync();
             await LoadInstalledModsAsync();
             AddLog("Application initialized.");
         }
@@ -244,7 +245,7 @@ public sealed class MainViewModel : ViewModelBase
                 SourceDlcRpfPath = SelectedDlcRpfPath.Trim(),
                 ModName = ModName.Trim(),
                 SpawnName = SpawnName.Trim(),
-                AutoEditDlclist = AutoEditDlclist
+                AutoEditDlclist = true
             };
 
             await Task.Run(async () => await _modInstallService.InstallModAsync(request, AddLog));
@@ -359,7 +360,7 @@ public sealed class MainViewModel : ViewModelBase
             var settings = new AppSettings
             {
                 GtaPath = GtaPath.Trim(),
-                AutoEditDlclist = AutoEditDlclist
+                AutoEditDlclist = true
             };
 
             await _jsonStorageService.SaveAppSettingsAsync(settings);

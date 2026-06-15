@@ -41,3 +41,9 @@ Desktop.ini
 # Local environment
 .env
 .env.*
+
+# Local embedded runtimes / investigation artifacts
+Python/
+*_info.txt
+*_members.txt
+*_apis.txt

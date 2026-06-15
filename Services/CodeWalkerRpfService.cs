@@ -8,6 +8,7 @@ public sealed class CodeWalkerRpfService : IRpfService
     public string ExtractTextFile(string rpfPath, string internalPath)
     {
         ValidateInputs(rpfPath, internalPath);
+        EnsureKeysLoaded(rpfPath);
 
         var rpf = OpenArchive(rpfPath);
         var fileEntry = FindFileEntry(rpf, internalPath)
@@ -26,6 +27,8 @@ public sealed class CodeWalkerRpfService : IRpfService
             throw new ArgumentNullException(nameof(content));
         }
 
+        EnsureKeysLoaded(rpfPath);
+
         var rpf = OpenArchive(rpfPath);
         var parts = SplitInternalPath(internalPath);
         if (parts.Length < 2)
@@ -39,6 +42,30 @@ public sealed class CodeWalkerRpfService : IRpfService
 
         // CreateFile overwrites an existing entry by deleting the old one and inserting the new content.
         RpfFile.CreateFile(directory, fileName, bytes, overwrite: true);
+
+        // Rebuild/Defragment the archive to write the changes back to disk.
+        RpfFile.Defragment(rpf, (msg, progress) => { }, false);
+    }
+
+    private static void EnsureKeysLoaded(string rpfPath)
+    {
+        if (GTA5Keys.PC_AES_KEY != null)
+        {
+            return;
+        }
+
+        var dir = Path.GetDirectoryName(rpfPath);
+        while (dir != null)
+        {
+            if (File.Exists(Path.Combine(dir, "GTA5.exe")))
+            {
+                GTA5Keys.LoadFromPath(dir, "GTA5.exe");
+                return;
+            }
+            dir = Path.GetDirectoryName(dir);
+        }
+
+        throw new InvalidOperationException("Could not locate GTA5.exe in any parent folders of the archive to load encryption keys.");
     }
 
     private static RpfFile OpenArchive(string rpfPath)

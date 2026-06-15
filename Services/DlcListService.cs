@@ -18,8 +18,9 @@ public sealed class DlcListService
             ?? throw new InvalidOperationException("dlclist.xml does not contain a closing </Paths> section.");
 
         var entryValue = BuildEntry(modName);
+        var normalizedEntry = NormalizeEntry(entryValue);
         var exists = pathsElement.Elements("Item")
-            .Any(item => string.Equals(item.Value.Trim(), entryValue, StringComparison.OrdinalIgnoreCase));
+            .Any(item => string.Equals(NormalizeEntry(item.Value), normalizedEntry, StringComparison.OrdinalIgnoreCase));
 
         if (!exists)
         {
@@ -42,8 +43,9 @@ public sealed class DlcListService
             ?? throw new InvalidOperationException("dlclist.xml does not contain a closing </Paths> section.");
 
         var entryValue = BuildEntry(modName);
+        var normalizedEntry = NormalizeEntry(entryValue);
         var itemsToRemove = pathsElement.Elements("Item")
-            .Where(item => string.Equals(item.Value.Trim(), entryValue, StringComparison.OrdinalIgnoreCase))
+            .Where(item => string.Equals(NormalizeEntry(item.Value), normalizedEntry, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         foreach (var item in itemsToRemove)
@@ -52,6 +54,13 @@ public sealed class DlcListService
         }
 
         return ToFormattedXml(document);
+    }
+
+    private static string NormalizeEntry(string entry)
+    {
+        return entry.Trim()
+            .Replace('\\', '/')
+            .Trim('/');
     }
 
     public string BuildEntry(string modName) => $"dlcpacks:/{modName}/";

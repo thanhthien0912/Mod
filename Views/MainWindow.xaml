@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="GTA V Offline Mod Launcher"
-        Height="820"
-        Width="1280"
-        MinHeight="720"
-        MinWidth="1100"
+        Height="800"
+        Width="1200"
+        MinHeight="700"
+        MinWidth="1050"
         WindowStartupLocation="CenterScreen"
         Background="#FFF8FAFC"
         Icon="pack://application:,,,/Assets/GtavLauncher.ico"
@@ -16,14 +16,14 @@
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType">
     <Window.Resources>
-        <!-- Color Palette & Brushes (Light Theme) -->
+        <!-- Color Palette & Brushes (Premium Light Theme) -->
         <SolidColorBrush x:Key="WindowBgBrush" Color="#FFF8FAFC" />
         <SolidColorBrush x:Key="CardBrush" Color="#FFFFFFFF" />
         <SolidColorBrush x:Key="CardBorderBrush" Color="#FFE2E8F0" />
         <SolidColorBrush x:Key="TextBrush" Color="#FF0F172A" />
         <SolidColorBrush x:Key="MutedBrush" Color="#FF64748B" />
         <SolidColorBrush x:Key="TitleBrush" Color="#FF0F172A" />
-        
+
         <SolidColorBrush x:Key="AccentBrush" Color="#FF059669" /> <!-- Emerald 600 -->
         <SolidColorBrush x:Key="AccentHoverBrush" Color="#FF047857" /> <!-- Emerald 700 -->
         <SolidColorBrush x:Key="AccentActiveBrush" Color="#FF065F46" /> <!-- Emerald 800 -->
@@ -44,20 +44,36 @@
         <SolidColorBrush x:Key="InputFocusedBgBrush" Color="#FFFFFFFF" />
         <SolidColorBrush x:Key="InputBorderBrush" Color="#FFE2E8F0" />
 
-        <!-- Light, fresh gradient header banner -->
+        <!-- Fresh light gradient header banner -->
         <LinearGradientBrush x:Key="HeroBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#FFECFDF5" Offset="0" />
             <GradientStop Color="#FFE0F2FE" Offset="0.5" />
             <GradientStop Color="#FFF3E8FF" Offset="1" />
         </LinearGradientBrush>
 
+        <!-- Status Dot Style -->
+        <Style x:Key="StatusDotStyle" TargetType="Border">
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding GtaPath}" Value="">
+                    <Setter Property="Background" Value="{StaticResource DangerBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding GtaPath}" Value="{x:Null}">
+                    <Setter Property="Background" Value="{StaticResource DangerBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Card Style with soft shadow -->
         <Style x:Key="CardBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource CardBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="16" />
-            <Setter Property="Padding" Value="20" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="18" />
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect BlurRadius="15" Color="#0F172A" Opacity="0.06" ShadowDepth="2" />
@@ -72,7 +88,6 @@
             <Setter Property="BorderBrush" Value="{StaticResource AccentBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Padding" Value="16,0" />
-            <Setter Property="Margin" Value="0,0,10,8" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -81,7 +96,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="8"
+                                CornerRadius="6"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}"
@@ -91,7 +106,6 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource AccentHoverBrush}" />
-                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource AccentBorderBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource AccentActiveBrush}" />
@@ -109,6 +123,56 @@
             </Setter>
         </Style>
 
+        <!-- Play/Launch Button Style (Large Sky Blue) -->
+        <Style x:Key="PlayButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#FF0284C7" /> <!-- Sky 600 -->
+            <Setter Property="BorderBrush" Value="#FF0369A1" /> <!-- Sky 700 -->
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="24,0" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" Color="#FF0284C7" Opacity="0.2" ShadowDepth="0" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="▶  " FontSize="11" VerticalAlignment="Center" FontWeight="Normal" />
+                                <ContentPresenter RecognizesAccessKey="True" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#FF0369A1" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#FF0C4A6E" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Background" Value="#FFE2E8F0" />
+                                <Setter Property="Foreground" Value="#FF94A3B8" />
+                                <Setter TargetName="Root" Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Effect" Value="{x:Null}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Secondary Button Style -->
         <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
@@ -119,7 +183,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="8"
+                                CornerRadius="6"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}"
@@ -138,7 +202,6 @@
                                 <Setter TargetName="Root" Property="Background" Value="#FFF8FAFC" />
                                 <Setter Property="Foreground" Value="#FFCBD5E1" />
                                 <Setter TargetName="Root" Property="BorderBrush" Value="Transparent" />
-                                <Setter TargetName="Root" Property="Opacity" Value="0.65" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -156,7 +219,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="8"
+                                CornerRadius="6"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}"
@@ -166,7 +229,6 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource DangerHoverBrush}" />
-                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource DangerBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource DangerActiveBrush}" />
@@ -175,7 +237,6 @@
                                 <Setter TargetName="Root" Property="Background" Value="#FFE2E8F0" />
                                 <Setter Property="Foreground" Value="#FF94A3B8" />
                                 <Setter TargetName="Root" Property="BorderBrush" Value="Transparent" />
-                                <Setter TargetName="Root" Property="Opacity" Value="0.65" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -190,7 +251,7 @@
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="CaretBrush" Value="{StaticResource AccentBrush}" />
             <Setter Property="SelectionBrush" Value="{StaticResource AccentLightBrush}" />
-            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="Padding" Value="12,9" />
             <Setter Property="Margin" Value="0,0,0,10" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -198,7 +259,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border x:Name="border"
-                                CornerRadius="8"
+                                CornerRadius="6"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}"
@@ -207,7 +268,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FF94A3B8"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFCBD5E1"/>
                             </Trigger>
                             <Trigger Property="IsFocused" Value="true">
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
@@ -235,21 +296,21 @@
                         <BulletDecorator Background="Transparent" SnapsToDevicePixels="true">
                             <BulletDecorator.Bullet>
                                 <Border x:Name="BulletBorder"
-                                        Width="20"
-                                        Height="20"
-                                        CornerRadius="6"
+                                        Width="18"
+                                        Height="18"
+                                        CornerRadius="4"
                                         BorderThickness="2"
                                         BorderBrush="{StaticResource CardBorderBrush}"
                                         Background="{StaticResource InputBgBrush}">
                                     <Path x:Name="CheckMark"
-                                          Width="10"
-                                          Height="8"
+                                          Width="9"
+                                          Height="7"
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Center"
                                           SnapsToDevicePixels="False"
                                           Stroke="{StaticResource AccentBrush}"
                                           StrokeThickness="2"
-                                          Data="M 1,4 L 4,7 L 9,1"
+                                          Data="M 1,3 L 3.5,6 L 8,1"
                                           Visibility="Collapsed" />
                                 </Border>
                             </BulletDecorator.Bullet>
@@ -277,206 +338,208 @@
             </Setter>
         </Style>
 
+        <!-- Toggle Button for Activity Log -->
+        <Style x:Key="LogToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Root" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="6">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock x:Name="BtnText" Text="Show Activity Log" VerticalAlignment="Center" Margin="0,0,6,0" FontSize="11"/>
+                                <TextBlock x:Name="BtnArrow" Text="▲" VerticalAlignment="Center" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#10000000" />
+                                <Setter Property="Foreground" Value="{StaticResource TitleBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="BtnText" Property="Text" Value="Hide Activity Log" />
+                                <Setter TargetName="BtnArrow" Property="Text" Value="▼" />
+                                <Setter TargetName="Root" Property="Background" Value="{StaticResource AccentLightBrush}" />
+                                <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Collapsible Log Border Style -->
+        <Style x:Key="CollapsibleLogBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource CardBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="Height" Value="0" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="15" Color="#0F172A" Opacity="0.06" ShadowDepth="2" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=LogToggleBtn, Path=IsChecked}" Value="True">
+                    <Setter Property="Height" Value="180" />
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
-    <Grid Margin="18">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" /> <!-- Header -->
+            <RowDefinition Height="*" />    <!-- Content area -->
+            <RowDefinition Height="Auto" /> <!-- Collapsible Log panel -->
+            <RowDefinition Height="Auto" /> <!-- Status / Control bar -->
         </Grid.RowDefinitions>
 
         <!-- ROW 0: Sleek Header Banner (Light Theme) -->
         <Border Grid.Row="0"
-                CornerRadius="16"
+                CornerRadius="14"
                 Background="{StaticResource HeroBrush}"
-                Padding="22"
+                Padding="20"
                 BorderBrush="#2010B981"
                 BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Border Width="80"
-                        Height="80"
-                        CornerRadius="16"
+                <!-- Logo -->
+                <Border Width="70"
+                        Height="70"
+                        CornerRadius="12"
                         Background="#2010B981"
                         BorderBrush="#4010B981"
                         BorderThickness="1"
-                        Padding="12"
+                        Padding="10"
                         VerticalAlignment="Center">
                     <Image Source="pack://application:,,,/Assets/GtavLauncher.png" Stretch="Uniform" />
                 </Border>
 
-                <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
-                    <WrapPanel Margin="0,0,0,6">
-                        <Border Margin="0,0,10,0" Padding="8,4" Background="#FFD1FAE5" CornerRadius="4" BorderBrush="#FF10B981" BorderThickness="1">
-                            <TextBlock Foreground="#FF065F46" FontSize="11" FontWeight="Bold" Text="Offline / Story Mode" />
-                        </Border>
-                        <Border Margin="0,0,10,0" Padding="8,4" Background="#FFECFDF5" CornerRadius="4" BorderBrush="#FF34D399" BorderThickness="1">
-                            <TextBlock Foreground="#FF065F46" FontSize="11" FontWeight="Bold" Text="Safe Installation" />
-                        </Border>
-                    </WrapPanel>
-
-                    <TextBlock FontSize="26"
+                <!-- App title info (Descriptive text and badges removed as requested) -->
+                <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                    <TextBlock FontSize="24"
                                FontWeight="Bold"
                                Foreground="{StaticResource TitleBrush}"
                                Text="GTA V Offline Mod Launcher" />
-                    <TextBlock Margin="0,6,0,0"
-                               Foreground="#FF475569"
-                               FontSize="13"
-                               TextWrapping="Wrap"
-                               Text="Manage and install your vehicle add-on mods safely. All operations are confined to the 'mods' folder." />
                 </StackPanel>
+
+                <!-- Big Launch Game Action in the Header! -->
+                <Button Grid.Column="2" 
+                        Style="{StaticResource PlayButtonStyle}" 
+                        Content="LAUNCH GTA V" 
+                        Command="{Binding LaunchGtaOfflineCommand}"
+                        Height="46"
+                        Padding="24,0" 
+                        VerticalAlignment="Center" />
             </Grid>
         </Border>
 
-        <!-- ROW 1: Content Area (2 Columns) -->
-        <Grid Grid.Row="1" Margin="0,18,0,0">
+        <!-- ROW 1: Content Area (Form on left, Mod List on right) -->
+        <Grid Grid.Row="1" Margin="0,16,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="450" />
+                <ColumnDefinition Width="380" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Left Column: Install Form & Activity Log -->
-            <Grid Grid.Column="0" Margin="0,0,16,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <!-- Left Column: Install Form -->
+            <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,16,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" /> <!-- Title & Description -->
+                        <RowDefinition Height="*" />    <!-- Inputs stack -->
+                        <RowDefinition Height="Auto" /> <!-- Install Button -->
+                    </Grid.RowDefinitions>
 
-                <!-- Install Form Card -->
-                <Border Grid.Row="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="130" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <!-- Title & Header -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+                        <TextBlock FontSize="16" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Install a vehicle add-on" />
+                        <TextBlock Margin="0,4,0,0" Foreground="{StaticResource MutedBrush}" FontSize="11.5" TextWrapping="Wrap" Text="Specify your GTA path, choose a dlc.rpf file, and type your mod details below." />
+                    </StackPanel>
 
-                        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Install a vehicle add-on" />
-                        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0,6,0,16" Foreground="{StaticResource MutedBrush}" FontSize="12" TextWrapping="Wrap" Text="Select your GTA V folder, pick a dlc.rpf file, and specify the mod details." />
+                    <!-- Form Inputs -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="0,0,4,0">
+                            <!-- GTA Folder Path -->
+                            <TextBlock Text="GTA V DIRECTORY" Foreground="{StaticResource MutedBrush}" FontSize="10.5" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding GtaPath, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Height="36" VerticalAlignment="Center" Margin="0"/>
+                                <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Browse" Command="{Binding BrowseGtaFolderCommand}" Margin="6,0,0,0" Padding="12,0" Height="36"/>
+                            </Grid>
 
-                        <!-- GTA Folder -->
-                        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" FontSize="12" Text="GTA folder" />
-                        <DockPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,10">
-                            <Button DockPanel.Dock="Right" Style="{StaticResource SecondaryButtonStyle}" Content="Browse" Command="{Binding BrowseGtaFolderCommand}" Margin="8,0,0,10" Padding="12,8" Height="38"/>
-                            <TextBox Text="{Binding GtaPath, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Margin="0,0,0,10" Height="38" />
-                        </DockPanel>
+                            <!-- dlc.rpf file path -->
+                            <TextBlock Text="DLC.RPF MOD FILE" Foreground="{StaticResource MutedBrush}" FontSize="10.5" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding SelectedDlcRpfPath, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Height="36" VerticalAlignment="Center" Margin="0"/>
+                                <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Select" Command="{Binding SelectDlcRpfCommand}" Margin="6,0,0,0" Padding="12,0" Height="36"/>
+                            </Grid>
 
-                        <!-- dlc.rpf file -->
-                        <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" FontSize="12" Text="dlc.rpf file" />
-                        <DockPanel Grid.Row="3" Grid.Column="1" Margin="0,0,0,10">
-                            <Button DockPanel.Dock="Right" Style="{StaticResource SecondaryButtonStyle}" Content="Select" Command="{Binding SelectDlcRpfCommand}" Margin="8,0,0,10" Padding="12,8" Height="38"/>
-                            <TextBox Text="{Binding SelectedDlcRpfPath, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Margin="0,0,0,10" Height="38" />
-                        </DockPanel>
+                            <!-- Mod Folder Name -->
+                            <TextBlock Text="MOD FOLDER NAME" Foreground="{StaticResource MutedBrush}" FontSize="10.5" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}" Height="36" Margin="0,0,0,12"/>
 
-                        <!-- Mod Name -->
-                        <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" FontSize="12" Text="Mod folder name" />
-                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ModName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" Height="38" />
-
-                        <!-- Spawn Name -->
-                        <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" FontSize="12" Text="Spawn name" />
-                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding SpawnName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14" Height="38" />
-
-                        <!-- Options, Path Preview and Actions -->
-                        <StackPanel Grid.Row="6" Grid.ColumnSpan="2">
-                            <CheckBox Content="Auto edit dlclist.xml inside update.rpf" IsChecked="{Binding AutoEditDlclist}" Margin="0,0,0,12" FontSize="12"/>
-                            
-                            <!-- Integrated Path Preview Box (Mint Theme) -->
-                            <Border Margin="0,0,0,14" Padding="10" CornerRadius="8" Background="#FFECFDF5" BorderBrush="#FFD1FAE5" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="Target dlc.rpf installation preview:" FontSize="10" FontWeight="Bold" Foreground="#FF065F46" />
-                                    <TextBlock Text="{Binding TargetInstallPathPreview}" FontSize="11" Foreground="#FF047857" TextWrapping="Wrap" Margin="0,3,0,0" FontFamily="Consolas" />
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Actions WrapPanel -->
-                            <WrapPanel HorizontalAlignment="Left" Margin="0,4,0,0">
-                                <Button Style="{StaticResource PrimaryButtonStyle}" Content="Install Mod" Command="{Binding InstallModCommand}" Height="38" Padding="16,0" Margin="0,0,10,8" />
-                                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Launch GTA V" Command="{Binding LaunchGtaOfflineCommand}" Height="38" Padding="16,0" Margin="0,0,10,8" />
-                                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Refresh" Command="{Binding RefreshInstalledModsCommand}" Height="38" Padding="16,0" Margin="0,0,10,8" />
-                                <Button Style="{StaticResource DangerButtonStyle}" Content="Uninstall Mod" Command="{Binding UninstallSelectedModCommand}" Height="38" Padding="16,0" Margin="0,0,10,8" />
-                            </WrapPanel>
+                            <!-- Spawn Code -->
+                            <TextBlock Text="VEHICLE SPAWN CODE" Foreground="{StaticResource MutedBrush}" FontSize="10.5" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding SpawnName, UpdateSourceTrigger=PropertyChanged}" Height="36" Margin="0,0,0,10"/>
                         </StackPanel>
-                    </Grid>
-                </Border>
+                    </ScrollViewer>
 
-                <!-- Activity Log Card -->
-                <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                    <!-- Big Install Button at the bottom of the card -->
+                    <Button Grid.Row="2" 
+                            Style="{StaticResource PrimaryButtonStyle}" 
+                            Content="Install Vehicle Mod" 
+                            Command="{Binding InstallModCommand}" 
+                            Height="40" 
+                            Margin="0,8,0,0" />
+                </Grid>
+            </Border>
 
-                        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Activity Log" />
-                        
-                        <ListBox x:Name="LogListBox"
-                                 Grid.Row="1"
-                                 Margin="0,10,0,0"
-                                 ItemsSource="{Binding LogEntries}"
-                                 Background="#FFF8FAFC"
-                                 Foreground="{StaticResource TextBrush}"
-                                 BorderBrush="{StaticResource CardBorderBrush}"
-                                 BorderThickness="1"
-                                 Padding="6"
-                                 FontFamily="Consolas"
-                                 FontSize="11"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="Margin" Value="0,0,0,4" />
-                                    <Setter Property="Padding" Value="8,6" />
-                                    <Setter Property="Background" Value="White" />
-                                    <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListBoxItem">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        CornerRadius="6"
-                                                        Padding="{TemplateBinding Padding}">
-                                                    <ContentPresenter />
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                        </ListBox>
-                    </Grid>
-                </Border>
-            </Grid>
-
-            <!-- Right Column: Installed Mods Card -->
+            <!-- Right Column: Installed Mods Table -->
             <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" /> <!-- Header Row -->
+                        <RowDefinition Height="*" />    <!-- Grid Area -->
+                        <RowDefinition Height="Auto" /> <!-- Grid Controls / Actions -->
                     </Grid.RowDefinitions>
 
-                    <DockPanel Grid.Row="0" LastChildFill="False">
-                        <TextBlock DockPanel.Dock="Left" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Installed Mods" />
-                        <Border DockPanel.Dock="Right" HorizontalAlignment="Right" Padding="10,4" CornerRadius="4" Background="#FFECFDF5" BorderBrush="#FF059669" BorderThickness="1">
-                            <TextBlock Foreground="#FF065F46" FontWeight="Bold" FontSize="11" Text="{Binding InstalledMods.Count, StringFormat=RECORDS: {0}}" />
+                    <!-- Header Row -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontSize="16" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Installed Vehicle Mods" VerticalAlignment="Center"/>
+                        <Border Grid.Column="1" Padding="8,4" CornerRadius="4" Background="#FFECFDF5" BorderBrush="#FF059669" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock Foreground="#FF065F46" FontWeight="Bold" FontSize="11" Text="{Binding InstalledMods.Count, StringFormat=TOTAL: {0}}" />
                         </Border>
-                    </DockPanel>
+                    </Grid>
 
-                    <!-- DataGrid -->
+                    <!-- DataGrid Table -->
                     <DataGrid Grid.Row="1"
                               Margin="0,14,0,0"
                               ItemsSource="{Binding InstalledMods}"
@@ -486,13 +549,14 @@
                               CanUserAddRows="False"
                               SelectionMode="Single"
                               GridLinesVisibility="Horizontal"
-                              HorizontalGridLinesBrush="#FFF1F5F9"
+                              HorizontalGridLinesBrush="#FFE2E8F0"
                               HeadersVisibility="Column"
                               BorderThickness="0"
                               Background="Transparent"
                               RowHeaderWidth="0"
                               SelectionUnit="FullRow">
                         <DataGrid.Resources>
+                            <!-- Column Headers styling -->
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="Background" Value="#FFF1F5F9" />
                                 <Setter Property="Foreground" Value="#FF475569" />
@@ -519,15 +583,14 @@
                                 <Setter Property="Background" Value="Transparent" />
                                 <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Height" Value="38" />
+                                <Setter Property="Height" Value="40" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="#FFF1F5F9" />
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#FFECFDF5" />
+                                        <Setter Property="Background" Value="{StaticResource AccentLightBrush}" />
                                         <Setter Property="Foreground" Value="#FF047857" />
-                                        <Setter Property="FontWeight" Value="SemiBold" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -556,15 +619,117 @@
                             </Style>
                         </DataGrid.CellStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mod Name" Binding="{Binding Name}" Width="130" />
-                            <DataGridTextColumn Header="Spawn Name" Binding="{Binding SpawnName}" Width="130" />
-                            <DataGridTextColumn Header="Installed Date" Binding="{Binding InstalledAt, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="170" />
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" />
-                            <DataGridTextColumn Header="Path" Binding="{Binding DlcRpfPath}" Width="*" />
+                            <!-- Columns Layout -->
+                            <DataGridTextColumn Header="Mod Folder Name" Binding="{Binding Name}" Width="140" />
+                            <DataGridTextColumn Header="Spawn Code" Binding="{Binding SpawnName}" Width="130" />
+                            <DataGridTextColumn Header="Installed Date" Binding="{Binding InstalledAt, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="150" />
+                            
+                            <!-- Custom Status Column with green text indicator -->
+                            <DataGridTemplateColumn Header="Status" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="6,2" CornerRadius="4" Background="#FFECFDF5" BorderBrush="#FFD1FAE5" BorderThickness="1" HorizontalAlignment="Left">
+                                            <TextBlock Text="{Binding Status}" Foreground="#FF065F46" FontSize="11" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="Location Path" Binding="{Binding DlcRpfPath}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <!-- Table Controls at the bottom -->
+                    <Grid Grid.Row="2" Margin="0,14,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Refresh list -->
+                        <Button Style="{StaticResource SecondaryButtonStyle}" 
+                                Content="Refresh List" 
+                                Command="{Binding RefreshInstalledModsCommand}" 
+                                Height="36" Padding="14,0" HorizontalAlignment="Left" />
+                        <!-- Uninstall Selected Mod -->
+                        <Button Grid.Column="1" 
+                                Style="{StaticResource DangerButtonStyle}" 
+                                Content="Uninstall Selected Mod" 
+                                Command="{Binding UninstallSelectedModCommand}" 
+                                Height="36" Padding="16,0" />
+                    </Grid>
                 </Grid>
             </Border>
+        </Grid>
+
+        <!-- ROW 2: Collapsible Activity Log -->
+        <Border Grid.Row="2" Style="{StaticResource CollapsibleLogBorderStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TitleBrush}" Text="Activity Log" />
+
+                <ListBox x:Name="LogListBox"
+                         Grid.Row="1"
+                         Margin="0,8,0,0"
+                         ItemsSource="{Binding LogEntries}"
+                         Background="#FFF8FAFC"
+                         Foreground="{StaticResource TextBrush}"
+                         BorderBrush="{StaticResource CardBorderBrush}"
+                         BorderThickness="1"
+                         Padding="6"
+                         FontFamily="Consolas"
+                         FontSize="11.5"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Margin" Value="0,0,0,4" />
+                            <Setter Property="Padding" Value="8,5" />
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="5"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <!-- ROW 3: Status / Control Bar -->
+        <Grid Grid.Row="3" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Side: Status Info -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <!-- GTA V Path Status dot indicator -->
+                <Border Style="{StaticResource StatusDotStyle}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                
+                <TextBlock Text="GTA Path: " Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" FontSize="11.5" />
+                <TextBlock Text="{Binding GtaPath}" Foreground="{StaticResource TitleBrush}" VerticalAlignment="Center" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,24,0"/>
+
+                <!-- Auto Edit Checkbox -->
+                <CheckBox Content="Auto-Edit dlclist.xml" IsChecked="{Binding AutoEditDlclist}" VerticalAlignment="Center" FontSize="11.5" />
+            </StackPanel>
+
+            <!-- Right Side: Log Drawer Toggle -->
+            <ToggleButton x:Name="LogToggleBtn" Grid.Column="1" Style="{StaticResource LogToggleButtonStyle}" />
         </Grid>
     </Grid>
 </Window>
